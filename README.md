@@ -1,6 +1,16 @@
 # Cloud-Project
 by LESIEUX Benjamin and MARIOTTE Thomas
 
+# QUIZZ
+
+1. Option 3
+2. Option 1
+3. Option 3 and 4
+4. Option 4
+5. Option 2
+6. Option 3
+7. Option 1
+
 # IAM
 
 ### Policies evaluation
