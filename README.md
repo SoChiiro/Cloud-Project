@@ -99,7 +99,109 @@ But there is specific prefixes specified in the condition:
 - `"images/*"`: Same that documents but with images.
 
 With this policy, the previous actions are allowed on the "example-bucket" itself, as well as any objects within the bucket that have keys matching the specified prefixes ("documents/" and "images/") for work. 
+___________
+
+```JSON
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowIAMUserCreation",
+      "Effect": "Allow",
+      "Action": "iam:CreateUser",
+      "Resource": "arn:aws:iam::123456789012:user/${aws:username}"
+    },
+    {
+      "Sid": "AllowIAMUserDeletion",
+      "Effect": "Allow",
+      "Action": "iam:DeleteUser",
+      "Resource": "arn:aws:iam::123456789012:user/${aws:username}"
+    }
+  ]
+}
+```
+
+## Question 4: What actions are allowed for IAM users based on this policy? How are the resource ARNs constructed?
+
+▶️ The following actions are allowed for IAM users:
+
+- `CreateUser`: This action allows the creation of IAM users.
+- `DeleteUser`: This action allows to delete IAM users.
+
+In this policy, ARNs are constructed by the following format :
+
+`"arn:aws:iam::123456789012:user/${aws:username}"`
 
 
+The `${aws:username}`  is a placeholder that is dynamically replaced with the username of the IAM user being targeted. We can remplace it by `thomasmariotte` or `benjaminlesieux` for exemple. So, this construction allows the policy to target specific IAM users based on their username that allow the actions "CreateUser" and "DeleteUser" to be performed.
+___________
+```JSON
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": ["iam:Get*", "iam:List*"],
+    "Resource": "*"
+  }
+}
+```
 
+## Questions 5:
+- Which AWS service does this policy grant you access to?
+- Does it allow you to create an IAM user, group, policy, or role?
+- Go to https://docs.aws.amazon.com/IAM/latest/UserGuide/ and in the left navigation expand Reference > Policy Reference > Actions, Resources, and Condition Keys. Choose Identity And Access Management. Scroll to the Actions Defined by Identity And Access Management list.Name at least three specific actions that the iam:Get* action allows.
+
+1. This policy grants access to the AWS IAM service.
+
+2. Yes, regarding the policy, it allows the creation of an IAM user, group, policy, and role since the actions `"iam:Get*"` and `"iam:List*"` are included.
+
+3. After regarding all specific actions that allowed by the "iam:Get*" action, we found three examples from the Actions Defined by Identity And Access Management list:
+
+  1. `"iam:GetUser"`: This action allows retrieving information about an **IAM user** like his user's name, ARN, creation date or attached policies.
+
+  2.`"iam:GetGroup"`: This action allows retrieving information about an **IAM group**, including the group's name, ARN, creation date, and attached policies.
+
+  3.`"iam:GetPolicy"`: This action allows retrieving information about an **IAM policy**, like the policy's name, ARN, and the policy document that defines its permissions.
+
+___________
+
+```JSON
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Condition": {
+        "StringEquals": {
+          "ec2:InstanceType": ["t2.micro", "t2.small"]
+        }
+      },
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Action": ["ec2:RunInstances", "ec2:StartInstances"],
+      "Effect": "Deny"
+    }
+  ]
+}
+```
+
+## Question 6: What actions does the policy allow?
+### What actions does the policy allow?
+
+▶️ The policy you provided has an "Effect" set to "Deny", which means it denies specifics actions. In this case, the policy denies :
+- `RunInstances`: Which means it prevents the creation of EC2 instances.
+- `StartInstances` : Which means it prevents the booting start of EC2 instances.
+
+### Say that the policy included an additional statement object, like this example:
+```JSON
+{
+  "Effect": "Allow",
+  "Action": "ec2:*"
+}
+```
+### How would the policy restrict the access granted to you by this additional statement?
+
+▶️ The "ec2:" allows any EC2 action to be performed. Even if the additional "Allow" statement grants full access using `"ec2:*"`, the presence of the more restrictive "Deny" statement will take precedence. Therefore, the access to the `"RunInstances"` and `"StartInstances"` actions will still be denied for instances with "t2.micro" or "t2.small" instance types, despite the broader "Allow" statement.
+
+### If the policy included both the statement on the left and the statement in question 2, could you terminate an m3.xlarge instance that existed in the account?
+
+▶️ If both the "Deny" statement and the "Allow" statement from the previous question is present in the policy, "Deny" statement will take over the "Allow" statement. This means that even if the "Allow" statement grants the `"TerminateInstances"` action, the "Deny" statement explicitly denies the `"TerminateInstances"` action for instances with "t2.micro" or "t2.small" instance types.
 
