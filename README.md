@@ -2,7 +2,7 @@
 by LESIEUX Benjamin and MARIOTTE Thomas
 
 # QUIZZ
-
+## IAM QUIZZ
 1. Option 3
 2. Option 1
 3. Option 3 and 4
@@ -10,7 +10,12 @@ by LESIEUX Benjamin and MARIOTTE Thomas
 5. Option 2
 6. Option 3
 7. Option 1
-
+## NETWORK QUIZZ 
+1. Option 3
+2. Option 3
+3. Option 1, Option 3 and Option 6
+4. Option 4
+   
 # IAM
 
 ### Policies evaluation
