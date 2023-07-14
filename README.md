@@ -1,6 +1,8 @@
 # Cloud-Project
 by LESIEUX Benjamin and MARIOTTE Thomas
 
+*Note that the all the QUIZZ and all IAM questions are on the README.rd, for the task1,  all parts of the project are in the [Task1](https://example.com/](https://github.com/SoChiiro/Cloud-Project/blob/main/Task1.pdf) "Task1") file*
+
 # QUIZZ
 ## IAM QUIZZ
 1. Option 3
